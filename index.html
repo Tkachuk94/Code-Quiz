@@ -1,23 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css"/>
-    <script src="app.js" defer></script>
-    <title>Javascript Quiz!</title>
+    <meta charset="UTF-8" />
+    <title>Code Quiz</title>
+    <link rel="stylesheet" href="./style.css" />
 </head>
-
+  
 <body>
-    <h1>Javascipt Quiz!</h1>
-<div class="quiz-container">
-  <div id="quiz"></div>
-</div>
-<button id="previous">Previous Question</button>
-<button id="next">Next Question</button>
-<button id="submit">Submit Quiz</button>
-<div id="results"></div>
-<p id="timer"></p>
+    <!--the timer is displayed at the top of the page-->
+    <p class="timer-text">Time remaining: <span id="timer-text">60</span></p>
+    <header>
+        <!--header content is hidden when the start button is clicked-->
+        <h1>Code Quiz Challenge</h1>
+        <p id="subtitle">The Javascript knowledge test!</p>
+        <button id="start-button">Start</button>
+    </header>
+    
+    <main>
+        <!--questions and answers are displayed here-->
+        <div class="hide">
+            <h2></h2>
+        </div>
+
+        <div id="questions"></div>
+        <!--displays text saying correct or incorrect after the user answers each question-->
+        <p id="check"></p>
+        <!--this is shown once the game is over-->
+        <div id="game-over" class="hide">
+            <p>Your final score is: <span id="final-score"></span> </p>
+            <p>Please enter your initials: <input type="text"  id="initials" placeholder="AAA"/></p>
+            <button  id="submit">Submit</button>
+        </div>
+        <div id="scores" class="hide">
+            <p>Scores:</p>
+            <li id="score-list"></li>
+        </div>
+    </main>
+    
+    <script src="app.js"> </script>
 </body>
 </html>

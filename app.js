@@ -1,204 +1,149 @@
-(function(){
-    // Functions
-    function buildQuiz(){
-      // variable to store the HTML output
-      const output = [];
-  
-      // for each question...
-      myQuestions.forEach(
-        (currentQuestion, questionNumber) => {
-  
-          // variable to store the list of possible answers
-          const answers = [];
-  
-          // and for each available answer...
-          for(letter in currentQuestion.answers){
-  
-            // ...add an HTML radio button
-            answers.push(
-              `<label>
-                <input type="radio" name="question${questionNumber}" value="${letter}">
-                ${letter} :
-                ${currentQuestion.answers[letter]}
-              </label>`
-            );
-          }
-  
-          // add this question and its answers to the output
-          output.push(
-            `<div class="slide">
-              <div class="question"> ${currentQuestion.question} </div>
-              <div class="answers"> ${answers.join("")} </div>
-            </div>`
-          );
-        }
-      );
-  
-      // finally combine our output list into one string of HTML and put it on the page
-      quizContainer.innerHTML = output.join('');
-    }
-  
-    function showResults(){
-  
-      // gather answer containers from our quiz
-      const answerContainers = quizContainer.querySelectorAll('.answers');
-  
-      // keep track of user's answers
-      let numCorrect = 0;
-  
-      // for each question...
-      myQuestions.forEach( (currentQuestion, questionNumber) => {
-  
-        // find selected answer
-        const answerContainer = answerContainers[questionNumber];
-        const selector = `input[name=question${questionNumber}]:checked`;
-        const userAnswer = (answerContainer.querySelector(selector) || {}).value;
-  
-        // if answer is correct
-        if(userAnswer === currentQuestion.correctAnswer){
-          // add to the number of correct answers
-          numCorrect++;
-  
-          // color the answers green
-          answerContainers[questionNumber].style.color = 'lightgreen';
-        }
-        // if answer is wrong or blank
-        else{
-          // color the answers red
-          answerContainers[questionNumber].style.color = 'red';
-        }
-      });
-  
-      // show number of correct answers out of total
-      resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
-    }
-  
-    function showSlide(n) {
-      slides[currentSlide].classList.remove('active-slide');
-      slides[n].classList.add('active-slide');
-      currentSlide = n;
-      if(currentSlide === 0){
-        previousButton.style.display = 'none';
-      }
-      else{
-        previousButton.style.display = 'inline-block';
-      }
-      if(currentSlide === slides.length-1){
-        nextButton.style.display = 'none';
-        submitButton.style.display = 'inline-block';
-      }
-      else{
-        nextButton.style.display = 'inline-block';
-        submitButton.style.display = 'none';
-      }
-    }
-  
-    function showNextSlide() {
-      showSlide(currentSlide + 1);
-    }
-  
-    function showPreviousSlide() {
-      showSlide(currentSlide - 1);
-    }
-  
-    // Variables
-    const quizContainer = document.getElementById('quiz');
-    const resultsContainer = document.getElementById('results');
-    const submitButton = document.getElementById('submit');
-    const myQuestions = [
-      {
-        question: "Inside which HTML element do we put the Javascript?",
-        answers: {
-          a: "script",
-          b: "js",
-          c: "scripting",
-          d: "javascript"
-        },
-        correctAnswer: "a"
-      },
-      {
-        question: "How do you call a function named myFunction",
-        answers: {
-          a: "myFunction()",
-          b: "call myFunction()",
-          c: "call function myFunction()"
-        },
-        correctAnswer: "a"
-      },
-      {
-        question: "How can you add a single line comment in Javascript?",
-        answers: {
-          a: "//This is a comment",
-          b: " ** This is a comment **",
-          c: "/*This is a comment*/",
-          d: "((This is a comment))"
-        },
-        correctAnswer: "a"
-      },
-      {
-        question: "How do you round the number 5.25, to the nearest integer",
-        answers: {
-          a: "rnd(5.25)",
-          b: "round(5.25)",
-          c: "Math.rnd(5.25)",
-          d: "Math.round(5.25)"
-        },
-        correctAnswer: "d"
-      },
-      {
-        question: "Which event occurs when the user clicks on an HTML element?",
-        answers: {
-          a: "onchange",
-          b: "onclick",
-          c: "hover",
-          d: "onmouseclick"
-        },
-        correctAnswer: "b"
-      },
-      
+var Start = document.querySelector("#start-button")
+var timerEl = document.querySelector("#timer-text")
+var questions = document.querySelector("#questions")
+var h1El = document.querySelector("h1")
+var subtitle = document.querySelector("#subtitle")
+var check = document.querySelector("#check")
+var gameOverEl = document.querySelector("#game-over")
+var initials = document.querySelector("#initials")
+var finalScore = document.querySelector("#final-score")
+var submit = document.querySelector("#submit")
+var scores = document.querySelector("#scores")
+var scoreList = document.querySelector("#score-list")
 
-    ];
-  
-    // Start quiz
-    buildQuiz();
-  
-    // Pagination
-    const previousButton = document.getElementById("previous");
-    const nextButton = document.getElementById("next");
-    const slides = document.querySelectorAll(".slide");
-    let currentSlide = 0;
-  
-    // Show the first slide
-    showSlide(currentSlide);
-  
-    // Event listeners
-    submitButton.addEventListener('click', showResults);
-    previousButton.addEventListener("click", showPreviousSlide);
-    nextButton.addEventListener("click", showNextSlide);
-  })();
+//database of questions and answers
+var questionList = [
+    {
+        question: "Inside Which HTML Element Do we put the Javascript link?", 
+        answers: [{text: "script", correct: true}, 
+        {text: "js", correct: false}, 
+        {text: "scripting", correct: false}, 
+        {text: "javascript", correct: false}]
+    },
+    {
+        question: "How do you call a funciton named myFunction?", 
+        answers: [{text: "call myFunction()", correct: false}, 
+        {text: "myFunction()", correct: true}, 
+        {text: "call function myFunction()", correct: false}, 
+        {text: "var myFunction()", correct: false}]
+    },
+    {
+        question: "How can you add a single line comment in Javascript?", 
+        answers: [{text: "/*This is a comment*/", correct: false}, 
+        {text: "<!--This is a comment-->", correct: false}, 
+        {text: "((This is a comment))", correct: false}, 
+        {text: "//This is a comment", correct: true}]
+    },
+    {
+        question: "How do you round the number 5.25, to the nearest integer?", 
+        answers: [{text: "rnd(5.25)", correct: false}, 
+        {text: "Math.round(5.25)", correct: true}, 
+        {text: "Math.rnd(5.25)", correct: false}, 
+        {text: "round(5.25)", correct: false}]
+    },
+    {
+        question: "Which Event Occurs when the user clicks on an HTML element?", 
+        answers: [{text: "onmouseClick", correct: false}, 
+        {text: "hover", correct: false}, 
+        {text: "onchange", correct: false}, 
+        {text: "onclick", correct: true}]
+    }
+]
 
-  var timeLeft = 60; // In seconds
-var timerId = setInterval(countdown, 1000);
+//start button starts the timer and starts displaying questions
+Start.addEventListener("click", function(event) {
+    startTimer()
+    getQuestions()
+    Start.classList.add("hide")
+    h1El.classList.add("hide")
+    subtitle.classList.add("hide")
+    questions.removeAttribute('class')
+})
 
-function countdown() {
-     timeLeft--;
-   /// Shows Time Remaining to answer Questions
-   document.getElementById("timer").innerHTML = timeLeft;
-    if (timeLeft < 1) {
-        document.getElementById("timer").innerHTML = 'Time has Run out!';
+//Timer
+var timeLeft = 60
+function startTimer() {  
     
+    timer = setInterval(function() {
+        timeLeft--
+        timerEl.textContent = timeLeft 
+        if (timeLeft<=0) {
+            gameOver()
+        }
+    },1000)
 }
 
-timeLeft = timeLeft
-//then you need to ask if the timeLeft is less than 1 and finish
- if (timeLeft < 1) {
-        clearTimeout(timerId);
-        // doSomething();  /// here you call to showResult 
- }
+//ends the game once it has gone through all the questions
+var display = 0
+function nextQuestion() { 
+    if (display === questionList.length) {
+        questions.style.display = "none"
+        check.style.display = "none"
+        gameOver() 
+    }
+    else {
+        getQuestions()
+    }  
 }
 
+//displays the current question and its answers
+function getQuestions(){
+    questions.innerHTML = ""
+    var currentQuestion = questionList[display].question
+    var h2El = document.createElement("h2")
+    questions.appendChild(h2El)
+    questions.children[0].textContent = currentQuestion
+    var currentAnswers = questionList[display].answers
+    currentAnswers.forEach(makeButtons)
+    function makeButtons (event) {
+        answerBtn = document.createElement("button")
+        answerBtn.innerText = event.text
+        h2El.appendChild(answerBtn)
+        answerBtn.addEventListener("click", function() {
+            //checks whether the user's choice is correct and then moves on to the next question
+            if (event.correct === true) {
+                check.textContent = "Correct!"
+                check.style.color= "Green"
+            }
+            else {
+                timeLeft = timeLeft - 10
+                check.textContent = "Incorrect!"
+                check.style.color = "red"
+                timerEl.textContent = timeLeft
+            }
+            display++
+            nextQuestion()
+        })
+    }
+}
 
+//hides questions and answers and displays endgame info
+function gameOver () {
+    //resets timeLeft score to 0 if it was negative
+    if (timeLeft < 0) {
+        timeLeft = 0
+        timerEl.textContent = timeLeft
+    }
+    questions.style.display = "none"
+    check.style.display = "none"
+    gameOverEl.removeAttribute('class')
+    clearInterval(timer)
+    finalScore.textContent = timeLeft
+}
 
+submit.addEventListener('click', function (event) {
+    submit.classList.add("hide")
+    scores.classList.remove("hide")
+    var initials = document.querySelector('#initials').value.trim()
+    if (initials === "") {
+        return;
+    }
+    var playerData = {
+        playerName: initials, 
+        timeLeft: timeLeft
+    }
+    localStorage.setItem("playerData", JSON.stringify(playerData))
+    var fetch = JSON.parse(localStorage.getItem("playerData"))
+    scoreList.append(fetch.playerName, " - ", fetch.timeLeft)
+})
 
-
-    
