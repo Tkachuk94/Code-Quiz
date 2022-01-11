@@ -44,6 +44,11 @@ button {
   margin: 10px;
   display: list-item;
   width: 100%;
+  height: 10vh;
+}
+
+button:hover {
+  background-color: var(--asparagus);
 }
 
 /*styling for the questions and answers*/
@@ -63,6 +68,7 @@ h2 {
 #check {
   color: var(--Artichoke);
   text-align: center;
+  font-size: 10rem;
 }
 
 #game-over,
