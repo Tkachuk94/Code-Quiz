@@ -8,6 +8,6 @@ You are given a total time of 60 seconds to answer 5 questions. Any unanswered q
 
 HTML, CSS, and Javascript
 
-![Image of website](https://github.com/Tkachuk94/Password-Generator/blob/main/images/website2.png)
+![Image of website](https://github.com/Tkachuk94/Code-Quiz/blob/main/Images/Code-quiz-img.png)
 
 https://tkachuk94.github.io/Code-Quiz/
